@@ -10,10 +10,43 @@ def load_coco_json(json_path):
         return json.load(f)
 
 
-def draw_bounding_box(image, bbox):
+def from_number_to_color(number):
+    colors = [
+        "red",
+        "blue",
+        "green",
+        "yellow",
+        "purple",
+        "orange",
+        "pink",
+        "cyan",
+        "magenta",
+        "lime",
+        "indigo",
+        "violet",
+        "teal",
+        "maroon",
+        "navy",
+        "olive",
+        "salmon",
+        "turquoise",
+        "gold",
+        "silver",
+        "coral",
+    ]
+
+    if number >= len(colors) or number < 0:
+        raise ValueError("Input number must be between 0 and 20 inclusive.")
+
+    return colors[number]
+
+
+def draw_bounding_box(image, bbox, category):
     draw = ImageDraw.Draw(image)
     x, y, w, h = bbox
-    draw.rectangle([x, y, x + w, y + h], outline="red", width=2)
+    draw.rectangle(
+        [x, y, x + w, y + h], outline=from_number_to_color(category), width=2
+    )
     return image
 
 
@@ -26,7 +59,7 @@ def process_image_batch(batch, coco_data, dataset_folder, c):
                 # Draw bounding boxes
                 for ann in coco_data["annotations"]:
                     if ann["image_id"] == img_data["id"]:
-                        img = draw_bounding_box(img, ann["bbox"])
+                        img = draw_bounding_box(img, ann["bbox"], ann["category_id"])
 
                 # Add image to PDF
                 img_width, img_height = img.size

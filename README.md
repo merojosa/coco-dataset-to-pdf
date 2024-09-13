@@ -1,4 +1,4 @@
-# PDF from COCO dataset
+# COCO dataset to PDF
 
 - Initiate a [virtual environment](https://www.freecodecamp.org/news/how-to-setup-virtual-environments-in-python/):
 
