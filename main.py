@@ -3,6 +3,9 @@ import os
 from PIL import Image, ImageDraw
 from reportlab.pdfgen import canvas
 from reportlab.lib.utils import ImageReader
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import Table, TableStyle
 
 
 def load_coco_json(json_path):
@@ -11,7 +14,7 @@ def load_coco_json(json_path):
 
 
 def from_number_to_color(number):
-    colors = [
+    local_colors = [
         "red",
         "blue",
         "green",
@@ -35,10 +38,52 @@ def from_number_to_color(number):
         "coral",
     ]
 
-    if number >= len(colors) or number < 0:
+    if number >= len(local_colors) or number < 0:
         raise ValueError("Input number must be between 0 and 20 inclusive.")
 
-    return colors[number]
+    return local_colors[number]
+
+
+def create_legend_page(c, categories):
+    c.setPageSize(letter)
+    c.setFont("Helvetica-Bold", 16)
+    c.drawString(50, 750, "Legend: Categories and Colors")
+
+    data = [["Category", "Color"]]
+    for category in categories:
+        data.append([category["name"], ""])
+
+    table = Table(data, colWidths=[200, 100])
+    table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), colors.grey),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
+                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                ("FONTSIZE", (0, 0), (-1, 0), 14),
+                ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
+                (
+                    "BACKGROUND",
+                    (1, 1),
+                    (1, -1),
+                    colors.white,
+                ),
+            ]
+        )
+    )
+
+    for i, category in enumerate(categories, start=1):
+        table.setStyle(
+            TableStyle(
+                [("BACKGROUND", (1, i), (1, i), from_number_to_color(category["id"]))]
+            )
+        )
+
+    table.wrapOn(c, 400, 600)
+    table.drawOn(c, 50, 600)
+
+    c.showPage()
 
 
 def draw_bounding_box(image, bbox, category):
@@ -78,6 +123,7 @@ def create_pdf_with_batched_images(coco_data, dataset_folder, output_name, batch
     images = coco_data["images"]
     for i in range(0, len(images), batch_size):
         c = canvas.Canvas(f"results/{output_name}{i//batch_size + 1}.pdf")
+        create_legend_page(c, coco_data["categories"])
         batch = images[i : i + batch_size]
         process_image_batch(batch, coco_data, dataset_folder, c)
         c.save()
