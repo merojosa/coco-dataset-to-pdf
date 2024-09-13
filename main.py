@@ -70,22 +70,22 @@ def process_image_batch(batch, coco_data, dataset_folder, c):
             print("Image path does not exist:", img_path)
 
 
-def create_pdf_with_batched_images(
-    coco_data, dataset_folder, output_pdf, batch_size=100
-):
-    c = canvas.Canvas(output_pdf)
+def create_pdf_with_batched_images(coco_data, dataset_folder, output_name, batch_size):
+
+    if not os.path.exists("results"):
+        os.mkdir("results")
 
     images = coco_data["images"]
     for i in range(0, len(images), batch_size):
+        c = canvas.Canvas(f"results/{output_name}{i//batch_size + 1}.pdf")
         batch = images[i : i + batch_size]
         process_image_batch(batch, coco_data, dataset_folder, c)
+        c.save()
         print(f"Processed batch {i//batch_size + 1} of {len(images)//batch_size + 1}")
-
-    c.save()
 
 
 # Usage
 dataset_folder = "dataset/"
 
 coco_data = load_coco_json(dataset_folder + "_annotations.coco.json")
-create_pdf_with_batched_images(coco_data, dataset_folder, "result.pdf", 100)
+create_pdf_with_batched_images(coco_data, dataset_folder, "batch", 300)
