@@ -1,0 +1,70 @@
+{
+  "categories": [
+    { "id": 0, "name": "junk-food", "supercategory": "none" },
+    { "id": 1, "name": "french_fries", "supercategory": "junk-food" },
+    { "id": 2, "name": "fried_chicken", "supercategory": "junk-food" },
+    { "id": 3, "name": "hamburger", "supercategory": "junk-food" },
+    { "id": 4, "name": "ice_cream", "supercategory": "junk-food" },
+    { "id": 5, "name": "junk_food_logo", "supercategory": "junk-food" },
+    { "id": 6, "name": "pizza", "supercategory": "junk-food" },
+    { "id": 7, "name": "soda", "supercategory": "junk-food" }
+  ],
+  "images": [
+    {
+      "id": 0,
+      "image_id": 0,
+      "category_id": 1,
+      "bbox": [273, 375, 42, 71],
+      "area": 2982,
+      "segmentation": [],
+      "iscrowd": 0
+    },
+    {
+      "id": 1,
+      "image_id": 0,
+      "category_id": 1,
+      "bbox": [318, 362, 32, 40],
+      "area": 1280,
+      "segmentation": [],
+      "iscrowd": 0
+    },
+    {
+      "id": 2,
+      "image_id": 0,
+      "category_id": 1,
+      "bbox": [369, 373, 54, 75.5],
+      "area": 4077,
+      "segmentation": [],
+      "iscrowd": 0
+    }
+  ],
+  "annotations": [
+    {
+      "id": 0,
+      "image_id": 0,
+      "category_id": 1,
+      "bbox": [273, 375, 42, 71],
+      "area": 2982,
+      "segmentation": [],
+      "iscrowd": 0
+    },
+    {
+      "id": 1,
+      "image_id": 0,
+      "category_id": 1,
+      "bbox": [318, 362, 32, 40],
+      "area": 1280,
+      "segmentation": [],
+      "iscrowd": 0
+    },
+    {
+      "id": 2,
+      "image_id": 0,
+      "category_id": 1,
+      "bbox": [369, 373, 54, 75.5],
+      "area": 4077,
+      "segmentation": [],
+      "iscrowd": 0
+    }
+  ]
+}
