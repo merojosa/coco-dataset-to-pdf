@@ -1,6 +1,6 @@
 import json
 import os
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 from reportlab.pdfgen import canvas
 from reportlab.lib.utils import ImageReader
 from reportlab.lib import colors
@@ -86,12 +86,30 @@ def create_legend_page(c, categories):
     c.showPage()
 
 
-def draw_bounding_box(image, bbox, category):
+def draw_bounding_box(image, bbox, color, label):
     draw = ImageDraw.Draw(image)
     x, y, w, h = bbox
+    draw.rectangle([x, y, x + w, y + h], outline=color, width=2)
+
+    font = ImageFont.load_default(12)
+
+    # Use textbbox to get label dimensions
+    label_bbox = draw.textbbox((0, 0), label, font=font)
+    label_w = label_bbox[2] - label_bbox[0]
+    label_h = label_bbox[3] - label_bbox[1]
+
+    # Above the bounding box
+    vertical_padding = int(label_h * 0.3)
+    total_label_h = label_h + 2 * vertical_padding
+    label_x = x
+    label_y = max(0, y - total_label_h)
+
+    # Label
     draw.rectangle(
-        [x, y, x + w, y + h], outline=from_number_to_color(category), width=2
+        [label_x, label_y, label_x + label_w, label_y + label_h + 3], fill="black"
     )
+    draw.text((label_x, label_y), label, font=font, fill="white")
+
     return image
 
 
@@ -104,7 +122,12 @@ def process_image_batch(batch, coco_data, dataset_folder, c):
                 # Draw bounding boxes
                 for ann in coco_data["annotations"]:
                     if ann["image_id"] == img_data["id"]:
-                        img = draw_bounding_box(img, ann["bbox"], ann["category_id"])
+                        color = from_number_to_color(ann["category_id"])
+                        label = ""
+                        for category in coco_data["categories"]:
+                            if category.get("id") == ann["category_id"]:
+                                label = category.get("name")
+                        img = draw_bounding_box(img, ann["bbox"], color, label)
 
                 # Add image to PDF
                 img_width, img_height = img.size
