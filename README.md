@@ -19,7 +19,7 @@ source ./coco-dataset-pdf-visualizer-env/bin/activate
 
 - Install the dependencies: `pip install -r requirements.txt`
 
-- Add `dataset` folder to the root of the project with its respective `_annotations.coco.json` and the images.
+- Add `dataset` folder to the root of the project with its respective `_annotations.coco.json` and the images. Check `placeholder.coco.json` to verify how the format should be.
 
 - Execute the script: `python main.py`
 

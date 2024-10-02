@@ -2,3 +2,4 @@ dataset
 result.pdf
 coco-dataset-pdf-visualizer-env
 *.pdf
+.DS_Store
