@@ -7,7 +7,19 @@ python -m venv coco-dataset-pdf-visualizer-env
 coco-dataset-pdf-visualizer-env/Scripts/activate.bat
 ```
 
+Windows: 
+```
+coco-dataset-pdf-visualizer-env/Scripts/activate.bat
+```
+
+MacOS: 
+```
+source ./coco-dataset-pdf-visualizer-env/bin/activate
+```
+
 - Install the dependencies: `pip install -r requirements.txt`
+
+- Add `dataset` folder to the root of the project with its respective `_annotations.coco.json` and the images.
 
 - Execute the script: `python main.py`
 
