@@ -85,7 +85,7 @@ def generate_data_frames(batch_size):
 dfs = generate_data_frames(batch_size=300)
 
 # Generate Excel with multiple sheets
-with pd.ExcelWriter("image_annotations_output.xlsx", engine="openpyxl") as writer:
+with pd.ExcelWriter("batches.xlsx", engine="openpyxl") as writer:
     for i, df in enumerate(dfs):
         df.to_excel(writer, sheet_name=f"batch {i + 1}", index=False)
 
